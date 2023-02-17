@@ -30,7 +30,7 @@ rules.heading = {
         '\n\n' + content + '\n' + underline + '\n\n'
       )
     } else {
-      return '\n\n' + repeat('#', hLevel) + ' ' + content + '\n\n'
+      return '\n\n' + repeat('*', hLevel) + ' ' + content + '\n\n'
     }
   }
 }
@@ -41,7 +41,7 @@ rules.blockquote = {
   replacement: function (content) {
     content = content.replace(/^\n+|\n+$/g, '')
     content = content.replace(/^/gm, '> ')
-    return '\n\n' + content + '\n\n'
+    return '#+begin_quote\n\n' + content + '\n\n#+end_quote'
   }
 }
 
@@ -91,9 +91,9 @@ rules.indentedCodeBlock = {
 
   replacement: function (content, node, options) {
     return (
-      '\n\n    ' +
+      '#+begin_src\n\n    ' +
       node.firstChild.textContent.replace(/\n/g, '\n    ') +
-      '\n\n'
+      '\n\n#+end_src'
     )
   }
 }
@@ -155,7 +155,7 @@ rules.inlineLink = {
     var href = node.getAttribute('href')
     var title = cleanAttribute(node.getAttribute('title'))
     if (title) title = ' "' + title + '"'
-    return '[' + content + '](' + href + title + ')'
+    return '[[' + href +  '][' + content + title + ']]'
   }
 }
 
@@ -237,7 +237,7 @@ rules.code = {
     content = content.replace(/\r?\n|\r/g, ' ')
 
     var extraSpace = /^`|^ .*?[^ ].* $|`$/.test(content) ? ' ' : ''
-    var delimiter = '`'
+    var delimiter = '='
     var matches = content.match(/`+/gm) || []
     while (matches.indexOf(delimiter) !== -1) delimiter = delimiter + '`'
 
@@ -253,7 +253,7 @@ rules.image = {
     var src = node.getAttribute('src') || ''
     var title = cleanAttribute(node.getAttribute('title'))
     var titlePart = title ? ' "' + title + '"' : ''
-    return src ? '![' + alt + ']' + '(' + src + titlePart + ')' : ''
+    return src ? '[[' + src + ']' + '[' + 'image' + alt + titlePart + ']]' : ''
   }
 }
 

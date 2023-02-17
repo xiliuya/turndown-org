@@ -82,9 +82,10 @@ rules.listItem = {
 rules.indentedCodeBlock = {
   filter: function (node, options) {
     return (
-      options.codeBlockStyle === 'indented' &&
-      node.nodeName === 'PRE' &&
-      node.firstChild &&
+      //options.codeBlockStyle === 'indented' &&
+      //node.nodeName === 'PRE' &&
+      node.nodeName === 'KBD' &&
+      //node.firstChild &&
       node.firstChild.nodeName === 'CODE'
     )
   },
@@ -127,9 +128,9 @@ rules.fencedCodeBlock = {
     var fence = repeat(fenceChar, fenceSize)
 
     return (
-      '\n\n' + fence + language + '\n' +
+      '#+begin_src\n\n' + fence + language + '\n' +
       code.replace(/\n$/, '') +
-      '\n' + fence + '\n\n'
+      '\n' + fence + '\n\n#+end_src'
     )
   }
 }
